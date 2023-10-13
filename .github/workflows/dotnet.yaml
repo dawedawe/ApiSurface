@@ -38,10 +38,16 @@ jobs:
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: ${{matrix.dotnet.sdk}}
+    - name: Prepare .NET tools
+      run: dotnet tool restore
+    - name: Prepare analyzers
+      run: dotnet restore ./analyzers/analyzers.fsproj
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
       run: dotnet build --no-restore
+    - name: Run analyzers
+      run: dotnet fsharp-analyzers --project ./ApiSurface/ApiSurface.fsproj --analyzers-path ./.analyzerpackages/g-research.fsharp.analyzers/0.1.3/ --verbose --fail-on-warnings GRA-STRING-001 GRA-STRING-002 GRA-STRING-003 GRA-UNIONCASE-001
     - name: Test
       run: dotnet test --no-build --verbosity normal --framework ${{matrix.dotnet.framework}}
 
