@@ -72,6 +72,8 @@ jobs:
         run: dotnet tool restore
       - name: Prepare analyzers
         run: dotnet restore ./analyzers/analyzers.fsproj
+      - name: Restore dependencies
+        run: dotnet restore
       - name: Run analyzers
         run: dotnet fsharp-analyzers --project ./ApiSurface/ApiSurface.fsproj --analyzers-path ./.analyzerpackages/g-research.fsharp.analyzers/ --verbose --fail-on-warnings GRA-STRING-001 GRA-STRING-002 GRA-STRING-003 GRA-UNIONCASE-001
 
